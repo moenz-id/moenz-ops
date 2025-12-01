@@ -1,6 +1,5 @@
 # Menghilangkan Menu Boot Windows Setelah Migrasi ke Ubuntu
 
-
 Setelah berpindah penuh ke Ubuntu, terkadang sistem masih menampilkan pilihan boot menuju ***Windows***, meskipun Windows sebenarnya sudah tidak digunakan lagi. Hal ini disebabkan karena entri Windows Boot Manager masih tersimpan di firmware UEFI, sehingga GRUB menampilkan opsi tersebut saat boot.
 
 Dokumentasi ini menjelaskan langkah-langkah untuk membuat PC langsung boot ke Ubuntu tanpa menampilkan pilihan boot Windows.
