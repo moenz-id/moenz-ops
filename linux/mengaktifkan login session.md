@@ -13,13 +13,11 @@ Di Armbian Desktop (XFCE), login session biasanya ditangani oleh LightDM. Jika s
 
 2. Cari baris seperti:
 
-    `
-    autologin-user=<username-pc>
-    autologin-user-timeout=0
-    `
+    `autologin-user=<username-pc>`
+    `autologin-user-timeout=0`
 
 
-3. Tambahkan tanda # untuk menonaktifkannya:
+4. Tambahkan tanda # untuk menonaktifkannya:
 
     ```bash
     #autologin-user=<username-pc>
@@ -27,9 +25,9 @@ Di Armbian Desktop (XFCE), login session biasanya ditangani oleh LightDM. Jika s
     ```
 
 
-4. Simpan (Ctrl+O, Enter) lalu keluar (Ctrl+X).
+5. Simpan (Ctrl+O, Enter) lalu keluar (Ctrl+X).
 
-5. Restart:
+6. Restart:
 
     ```bash
     sudo systemctl restart lightdm
