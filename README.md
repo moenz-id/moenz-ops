@@ -1,22 +1,33 @@
-# Personal Knowledge Base
+# moenz-ops
 
-Repository ini berisi kumpulan dokumentasi pribadi, troubleshooting Linux, konfigurasi system, dan catatan teknis yang digunakan untuk kebutuhan sehari-hari.
+Personal Linux operations knowledge base berisi dokumentasi troubleshooting, recovery guide, konfigurasi system, dan catatan sysadmin yang digunakan untuk kebutuhan sehari-hari.
 
-Fokus utama repository:
+Repository ini dibuat sebagai:
+
+- Personal sysadmin notebook
+- Linux troubleshooting archive
+- Recovery documentation
+- System configuration reference
+- Operational notes repository
+
+---
+
+# Focus Areas
 
 - Linux troubleshooting
 - Bootloader recovery
-- System configuration
+- UEFI & GRUB repair
 - Desktop environment configuration
-- Personal sysadmin notes
-- Recovery documentation
+- System maintenance
+- Recovery & disaster mitigation
+- Personal operations notes
 
 ---
 
 # Repository Structure
 
 ```text
-github/
+moenz-ops/
 ├── README.md
 └── linux/
     ├── guides/
@@ -31,7 +42,7 @@ github/
 
 ## Recover GRUB & Initramfs
 
-Dokumentasi recovery Linux ketika sistem gagal boot dan masuk ke BusyBox/initramfs.
+Recovery guide ketika Linux gagal boot dan masuk ke BusyBox/initramfs.
 
 Topics:
 
@@ -41,7 +52,7 @@ Topics:
 - EFI troubleshooting
 - SMART health check
 
-Link:
+Documentation:
 
 - [recover-initramfs-grub.md](linux/guides/recover-initramfs-grub.md)
 
@@ -49,16 +60,16 @@ Link:
 
 ## Remove Windows Boot Entry
 
-Membersihkan entri Windows Boot Manager setelah migrasi penuh ke Ubuntu.
+Membersihkan Windows Boot Manager setelah migrasi penuh ke Ubuntu.
 
 Topics:
 
 - efibootmgr
-- UEFI boot cleanup
-- disable os-prober
+- UEFI cleanup
 - GRUB cleanup
+- disable os-prober
 
-Link:
+Documentation:
 
 - [remove-windows-boot-entry.md](linux/guides/remove-windows-boot-entry.md)
 
@@ -66,15 +77,15 @@ Link:
 
 ## Enable Login Screen In LightDM
 
-Mengaktifkan kembali login screen pada Armbian XFCE yang menggunakan LightDM.
+Mengaktifkan kembali login screen pada Armbian XFCE menggunakan LightDM.
 
 Topics:
 
-- disable auto login
+- auto login
 - LightDM configuration
-- XFCE session login
+- XFCE login session
 
-Link:
+Documentation:
 
 - [enable-login-screen-lightdm.md](linux/guides/enable-login-screen-lightdm.md)
 
@@ -82,7 +93,7 @@ Link:
 
 # Documentation Standard
 
-Setiap dokumentasi di repository ini sebisa mungkin memiliki:
+Setiap dokumentasi di repository ini diusahakan memiliki:
 
 - Summary
 - Environment
@@ -124,6 +135,20 @@ backup-home.sh
 mount-nas.sh
 repair-network.sh
 ```
+
+---
+
+# Future Plans
+
+Planned repository expansion:
+
+- automation scripts
+- docker notes
+- networking guides
+- server management
+- homelab documentation
+- shell utilities
+- recovery scripts
 
 ---
 
