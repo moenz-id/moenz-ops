@@ -1,52 +1,132 @@
 # Personal Knowledge Base
 
-Repository ini berisi dokumentasi pribadi, troubleshooting, script automation, dan catatan teknis.
+Repository ini berisi kumpulan dokumentasi pribadi, troubleshooting Linux, konfigurasi system, dan catatan teknis yang digunakan untuk kebutuhan sehari-hari.
 
-## Struktur Repository
+Fokus utama repository:
+
+- Linux troubleshooting
+- Bootloader recovery
+- System configuration
+- Desktop environment configuration
+- Personal sysadmin notes
+- Recovery documentation
+
+---
+
+# Repository Structure
 
 ```text
 github/
 ├── README.md
-├── linux/
-│   ├── guides/
-│   ├── scripts/
-│   ├── notes/
-│   └── cheatsheets/
-├── docker/
-├── networking/
-├── automation/
-├── windows/
-└── misc/
+└── linux/
+    ├── guides/
+    ├── scripts/
+    ├── notes/
+    └── cheatsheets/
 ```
 
-## Linux Guides
+---
 
-- `linux/guides/recover-initramfs-grub.md`
+# Linux Guides
 
-## Naming Convention
+## Recover GRUB & Initramfs
 
-### Markdown
+Dokumentasi recovery Linux ketika sistem gagal boot dan masuk ke BusyBox/initramfs.
+
+Topics:
+
+- fsck recovery
+- chroot repair
+- reinstall GRUB
+- EFI troubleshooting
+- SMART health check
+
+Link:
+
+- [recover-initramfs-grub.md](linux/guides/recover-initramfs-grub.md)
+
+---
+
+## Remove Windows Boot Entry
+
+Membersihkan entri Windows Boot Manager setelah migrasi penuh ke Ubuntu.
+
+Topics:
+
+- efibootmgr
+- UEFI boot cleanup
+- disable os-prober
+- GRUB cleanup
+
+Link:
+
+- [remove-windows-boot-entry.md](linux/guides/remove-windows-boot-entry.md)
+
+---
+
+## Enable Login Screen In LightDM
+
+Mengaktifkan kembali login screen pada Armbian XFCE yang menggunakan LightDM.
+
+Topics:
+
+- disable auto login
+- LightDM configuration
+- XFCE session login
+
+Link:
+
+- [enable-login-screen-lightdm.md](linux/guides/enable-login-screen-lightdm.md)
+
+---
+
+# Documentation Standard
+
+Setiap dokumentasi di repository ini sebisa mungkin memiliki:
+
+- Summary
+- Environment
+- Step-by-step guide
+- Verification
+- Post-mortem
+- Prevention / mitigation
+
+---
+
+# Naming Convention
+
+## Markdown Files
 
 ```text
 verb-topic.md
 ```
 
-Contoh:
+Example:
 
 ```text
-recover-grub.md
-install-docker.md
+recover-initramfs-grub.md
+remove-windows-boot-entry.md
+enable-login-screen-lightdm.md
 ```
 
-### Scripts
+---
+
+## Scripts
 
 ```text
 verb-purpose.sh
 ```
 
-Contoh:
+Example:
 
 ```text
 backup-home.sh
 mount-nas.sh
+repair-network.sh
 ```
+
+---
+
+# Notes
+
+Semua dokumentasi ditulis berdasarkan pengalaman penggunaan nyata dan dapat berubah sesuai kebutuhan environment.
