@@ -21,6 +21,8 @@ Repository ini dibuat sebagai:
 - System maintenance
 - Recovery & disaster mitigation
 - Personal operations notes
+- Docker & homelab operations
+- Armbian STB infrastructure
 
 ---
 
@@ -29,12 +31,33 @@ Repository ini dibuat sebagai:
 ```text
 moenz-ops/
 ├── README.md
+├── armbian/
+│   ├── README.md
+│   └── backup-restore-docker.md
 └── linux/
     ├── guides/
     ├── scripts/
     ├── notes/
     └── cheatsheets/
 ```
+
+---
+
+# Armbian Documentation
+
+Dokumentasi terkait:
+
+- Docker backup & restore
+- STB homelab setup
+- Network troubleshooting
+- DNS & gateway recovery
+- MAC conflict troubleshooting
+- Docker recovery workflow
+
+Documentation:
+
+- [Armbian Overview](armbian/README.md)
+- [Docker Backup & Restore](armbian/backup-restore-docker.md)
 
 ---
 
@@ -149,6 +172,8 @@ Planned repository expansion:
 - homelab documentation
 - shell utilities
 - recovery scripts
+- infrastructure diagrams
+- backup automation
 
 ---
 
