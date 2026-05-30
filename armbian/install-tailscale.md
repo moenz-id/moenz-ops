@@ -93,6 +93,46 @@ Buka URL tersebut dan login menggunakan akun Tailscale.
 
 ---
 
+# DNS Override (Rekomendasi Homelab)
+
+Secara default Tailscale dapat mengambil pengaturan DNS dari dashboard Tailscale.
+
+Hal ini kadang membuat node menggunakan DNS Tailscale dan bukan DNS lokal yang sudah dikonfigurasi pada jaringan.
+
+Gejala yang sering muncul:
+
+- DNS tiba-tiba berubah
+- Query tidak melewati AdGuard Home lokal
+- Bingung karena hasil DNS berbeda dari perangkat lain
+
+Untuk tetap menggunakan DNS lokal, jalankan:
+
+```bash
+sudo tailscale up --accept-dns=false
+```
+
+Verifikasi:
+
+```bash
+tailscale status
+```
+
+Atau cek konfigurasi:
+
+```bash
+tailscale debug prefs
+```
+
+Pada homelab ini direkomendasikan menggunakan:
+
+```bash
+sudo tailscale up --accept-dns=false
+```
+
+agar DNS tetap mengikuti konfigurasi lokal atau AdGuard Home.
+
+---
+
 # Verifikasi Koneksi
 
 Cek status:
@@ -136,7 +176,7 @@ ssh moenz@100.x.x.x
 Aktifkan:
 
 ```bash
-sudo tailscale up --ssh
+sudo tailscale up --ssh --accept-dns=false
 ```
 
 Verifikasi:
