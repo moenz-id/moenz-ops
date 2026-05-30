@@ -1,37 +1,66 @@
-# Home Assistant Container
+# Deploy Home Assistant Container on Armbian
 
-Dokumentasi deployment Home Assistant menggunakan Docker Compose.
+## Summary
 
-## Standar Homelab
+Dokumentasi deployment Home Assistant Container dan Mosquitto menggunakan Docker Compose pada Armbian.
 
-- network_mode: host
-- Data di /data/appdata/homeassistant
-- Stack di /data/stacks/homeassistant
-- MQTT terpisah menggunakan Mosquitto
+Dokumen ini diasumsikan menggunakan environment yang telah mengikuti panduan:
 
-## Struktur Direktori
+- setup/install-docker.md
+
+---
+
+# Prerequisites
+
+Pastikan Docker sudah berjalan normal.
+
+Verifikasi:
+
+```bash
+docker version
+docker compose version
+docker ps
+```
+
+Pastikan network internal_net sudah tersedia:
+
+```bash
+docker network ls
+```
+
+Jika belum ada:
+
+```bash
+docker network create internal_net
+```
+
+---
+
+# Struktur Direktori
+
+```text
+/data
+├── appdata
+│   ├── homeassistant
+│   └── mosquitto
+│       ├── config
+│       ├── data
+│       └── log
+└── stacks
+    └── homeassistant
+        └── compose.yaml
+```
+
+---
+
+# Backup Data Penting
+
+Direktori yang perlu dibackup:
 
 ```text
 /data/appdata/homeassistant
+/data/appdata/mosquitto
 /data/stacks/homeassistant
 ```
 
-## Deploy
-
-```bash
-cd /data/stacks/homeassistant
-docker compose up -d
-```
-
-## Verifikasi
-
-```bash
-docker ps
-docker logs -f homeassistant
-```
-
-## Akses
-
-```text
-http://IP-STB:8123
-```
+Dengan backup direktori tersebut, deployment dapat dipulihkan dengan cepat setelah reinstall Armbian atau migrasi perangkat.
