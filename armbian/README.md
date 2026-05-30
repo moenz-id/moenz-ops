@@ -1,72 +1,107 @@
 # Armbian Documentation
 
-This folder contains operational notes, recovery procedures, and homelab documentation related to the Armbian STB environment.
+Dokumentasi operasional homelab berbasis Armbian STB.
+
+Repository ini menggunakan struktur dokumentasi yang dipisahkan berdasarkan fungsi agar lebih mudah dicari saat rebuild, migrasi, maupun troubleshooting.
 
 ---
 
-# Terminology
-
-| Name | Description |
-|---|---|
-| STB | STB running Armbian + Docker |
-| openwrt | STB running OpenWrt as gateway/router |
-| tplink | TP-Link router/AP |
-
----
-
-# Documentation Index
-
-## Docker
-
-### Docker Backup & Restore
-
-File:
+# Documentation Structure
 
 ```text
-backup-restore-docker.md
+armbian/
+├── setup/
+├── services/
+└── maintenance/
 ```
 
-Contains:
-- Docker storage layout
-- Bind mount strategy
-- Backup workflow
-- Restore workflow
-- Docker recovery process
-- DNS troubleshooting
-- MAC address conflict troubleshooting
-- Network recovery notes
+---
+
+# Setup
+
+Dokumentasi instalasi dan konfigurasi dasar sistem.
+
+- setup/install-docker.md
+- setup/install-tailscale.md
+- setup/migrate-docker-root-to-sdcard.md
+
+Topik:
+- Instalasi Docker
+- Konfigurasi Docker Compose
+- Network internal_net
+- Instalasi Tailscale
+- Migrasi Docker Root ke SD Card
 
 ---
 
-# Current Architecture Summary
+# Services
 
-## openwrt
+Dokumentasi deployment layanan yang digunakan pada homelab.
+
+- services/homeassistant.md
+- services/portainer.md
+- services/cloudflared.md
+
+Topik:
+- Home Assistant + Mosquitto
+- Portainer CE
+- Cloudflare Tunnel
+
+---
+
+# Maintenance
+
+Dokumentasi pemeliharaan, backup, recovery, dan troubleshooting.
+
+- maintenance/backup-restore-docker.md
+- maintenance/troubleshooting.md
+
+Topik:
+- Backup dan Restore Docker
+- Recovery setelah kegagalan sistem
+- Docker Storage Layout
+- Troubleshooting jaringan
+- Catatan operasional homelab
+
+---
+
+# Current Architecture
+
+## OpenWrt
+
 Role:
 - Gateway
-- DHCP server
-- DNS server
-- Internet routing
+- DHCP Server
+- DNS Server
+- Internet Routing
 
-## STB (Armbian)
+## Armbian STB
+
 Role:
-- Docker host
+- Docker Host
 - Home Assistant
 - Mosquitto
-- n8n
-- AdGuard Home
+- Portainer
 - Cloudflared
 
-## tplink
-Role:
-- Access Point / switch
+## Network Standard
+
+Sebagian besar container menggunakan:
+
+```text
+internal_net
+```
+
+Sedangkan Home Assistant menggunakan:
+
+```text
+network_mode: host
+```
+
+untuk mempermudah discovery perangkat lokal.
 
 ---
 
-# Recommended Future Improvements
+# Notes
 
-- Reverse proxy
-- Internal DNS records
-- VLAN segmentation
-- Monitoring stack
-- Docker Swarm / k3s
-- Centralized backup automation
+Dokumentasi lama akan dihapus secara bertahap setelah seluruh konten berhasil dimigrasikan ke struktur baru.
