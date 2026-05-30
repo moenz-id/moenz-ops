@@ -1,29 +1,80 @@
-# Portainer
+# Deploy Portainer on Armbian
 
-Dokumentasi deployment Portainer CE.
+## Summary
 
-## Standar Homelab
+Dokumentasi instalasi Portainer CE menggunakan Docker Compose pada Armbian.
 
-- Menggunakan internal_net
-- Data di /data/appdata/portainer
-- Stack di /data/stacks/portainer
+Portainer digunakan sebagai web interface untuk mengelola:
 
-## Deploy
+- Container
+- Images
+- Volumes
+- Networks
+- Docker Compose Stack
+
+Panduan ini mengikuti standar homelab repository:
+
+- Docker Root berada di SD Card (opsional)
+- Data aplikasi berada di /data/appdata
+- Stack berada di /data/stacks
+- Menggunakan network internal_net
+
+---
+
+# Prerequisites
+
+Pastikan Docker sudah berjalan.
 
 ```bash
-cd /data/stacks/portainer
-docker compose up -d
+docker version
+docker compose version
 ```
 
-## Akses
+Pastikan network internal_net tersedia.
+
+```bash
+docker network ls
+```
+
+Jika belum ada:
+
+```bash
+docker network create internal_net
+```
+
+---
+
+# Struktur Direktori
+
+```text
+/data
+├── appdata
+│   └── portainer
+└── stacks
+    └── portainer
+```
+
+---
+
+# Akses Web UI
 
 ```text
 https://IP-STB:9443
 ```
 
-## Update
+Portainer akan meminta pembuatan akun administrator pada login pertama.
 
-```bash
-docker compose pull
-docker compose up -d
+---
+
+# Backup Data Penting
+
+```text
+/data/appdata/portainer
+/data/stacks/portainer
 ```
+
+---
+
+# Notes
+
+Portainer bukan kebutuhan wajib untuk Docker, namun sangat membantu ketika jumlah container mulai bertambah dan menjadi dashboard utama pengelolaan homelab berbasis Docker.
