@@ -1,0 +1,37 @@
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
+client_secret*.json
+
+# Logs and runtime output
+*.log
+logs/
+tmp/
+temp/
+
+# Backups and archives
+*.bak
+*.backup
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+*.7z
+*.rar
+*.dmp
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Generated caches
+.cache/
+__pycache__/

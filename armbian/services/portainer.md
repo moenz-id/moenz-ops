@@ -56,6 +56,49 @@ docker network create internal_net
 
 ---
 
+# Docker Compose
+
+File compose tersedia di:
+
+- [../../docker/portainer.yaml](../../docker/portainer.yaml)
+
+---
+
+# Deploy
+
+Buat direktori:
+
+```bash
+mkdir -p /data/appdata/portainer
+mkdir -p /data/stacks/portainer
+```
+
+Salin compose:
+
+```bash
+cp docker/portainer.yaml /data/stacks/portainer/compose.yaml
+```
+
+Validasi dan deploy:
+
+```bash
+cd /data/stacks/portainer
+docker compose config
+docker compose pull
+docker compose up -d
+```
+
+---
+
+# Verification
+
+```bash
+docker ps
+docker logs -f portainer
+```
+
+---
+
 # Akses Web UI
 
 ```text

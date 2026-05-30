@@ -1,0 +1,16 @@
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    ports:
+      - "9443:9443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /data/appdata/portainer:/data
+    networks:
+      - internal_net
+
+networks:
+  internal_net:
+    external: true

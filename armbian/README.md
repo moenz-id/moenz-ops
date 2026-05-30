@@ -11,8 +11,16 @@ Repository ini menggunakan struktur dokumentasi yang dipisahkan berdasarkan fung
 ```text
 armbian/
 ├── setup/
+│   ├── install-docker.md
+│   ├── install-tailscale.md
+│   └── migrate-docker-root-to-sdcard.md
 ├── services/
-└── maintenance/
+│   ├── cloudflared.md
+│   ├── homeassistant.md
+│   └── portainer.md
+├── maintenance/
+│   ├── backup-restore-docker.md
+│   └── troubleshooting.md
 ```
 
 ---
@@ -21,9 +29,9 @@ armbian/
 
 Dokumentasi instalasi dan konfigurasi dasar sistem.
 
-- setup/install-docker.md
-- setup/install-tailscale.md
-- setup/migrate-docker-root-to-sdcard.md
+- [Install Docker](setup/install-docker.md)
+- [Install Tailscale](setup/install-tailscale.md)
+- [Migrate Docker Root to SD Card](setup/migrate-docker-root-to-sdcard.md)
 
 Topik:
 - Instalasi Docker
@@ -38,9 +46,9 @@ Topik:
 
 Dokumentasi deployment layanan yang digunakan pada homelab.
 
-- services/homeassistant.md
-- services/portainer.md
-- services/cloudflared.md
+- [Home Assistant](services/homeassistant.md)
+- [Portainer](services/portainer.md)
+- [Cloudflared](services/cloudflared.md)
 
 Topik:
 - Home Assistant + Mosquitto
@@ -53,8 +61,8 @@ Topik:
 
 Dokumentasi pemeliharaan, backup, recovery, dan troubleshooting.
 
-- maintenance/backup-restore-docker.md
-- maintenance/troubleshooting.md
+- [Docker Backup & Restore](maintenance/backup-restore-docker.md)
+- [Troubleshooting](maintenance/troubleshooting.md)
 
 Topik:
 - Backup dan Restore Docker
@@ -62,6 +70,18 @@ Topik:
 - Docker Storage Layout
 - Troubleshooting jaringan
 - Catatan operasional homelab
+
+---
+
+# Docker Compose
+
+File compose siap pakai disimpan di:
+
+- [Docker Compose Files](../docker/README.md)
+- [homeassistant.yaml](../docker/homeassistant.yaml)
+- [portainer.yaml](../docker/portainer.yaml)
+- [cloudflared.yaml](../docker/cloudflared.yaml)
+- [searxng.yaml](../docker/searxng.yaml)
 
 ---
 
@@ -104,4 +124,4 @@ untuk mempermudah discovery perangkat lokal.
 
 # Notes
 
-Dokumentasi lama akan dihapus secara bertahap setelah seluruh konten berhasil dimigrasikan ke struktur baru.
+Dokumentasi utama berada di subfolder berdasarkan fungsi. File lama di root `armbian/` sudah dimigrasikan ke struktur ini.

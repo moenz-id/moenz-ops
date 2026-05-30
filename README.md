@@ -30,11 +30,34 @@ Repository ini dibuat sebagai:
 
 ```text
 moenz-ops/
+├── .editorconfig
+├── .gitignore
 ├── README.md
+├── SECURITY.md
 ├── armbian/
 │   ├── README.md
-│   └── backup-restore-docker.md
-└── linux/
+│   ├── setup/
+│   ├── services/
+│   └── maintenance/
+├── docker/
+│   ├── .env.example
+│   ├── README.md
+│   ├── cloudflared.yaml
+│   ├── homeassistant.yaml
+│   ├── mosquitto.conf.example
+│   ├── portainer.yaml
+│   └── searxng.yaml
+├── linux/
+    ├── README.md
+    └── guides/
+└── templates/
+    └── service.md
+```
+
+Planned structure:
+
+```text
+linux/
     ├── guides/
     ├── scripts/
     ├── notes/
@@ -57,11 +80,35 @@ Dokumentasi terkait:
 Documentation:
 
 - [Armbian Overview](armbian/README.md)
-- [Docker Backup & Restore](armbian/backup-restore-docker.md)
+- [Install Docker](armbian/setup/install-docker.md)
+- [Install Tailscale](armbian/setup/install-tailscale.md)
+- [Migrate Docker Root to SD Card](armbian/setup/migrate-docker-root-to-sdcard.md)
+- [Home Assistant](armbian/services/homeassistant.md)
+- [Portainer](armbian/services/portainer.md)
+- [Cloudflared](armbian/services/cloudflared.md)
+- [Docker Backup & Restore](armbian/maintenance/backup-restore-docker.md)
+- [Armbian Troubleshooting](armbian/maintenance/troubleshooting.md)
+
+---
+
+# Docker Compose
+
+File Docker Compose disimpan terpusat di:
+
+- [Docker Compose Files](docker/README.md)
+
+Compose utama:
+
+- [homeassistant.yaml](docker/homeassistant.yaml)
+- [portainer.yaml](docker/portainer.yaml)
+- [cloudflared.yaml](docker/cloudflared.yaml)
+- [searxng.yaml](docker/searxng.yaml)
 
 ---
 
 # Linux Guides
+
+- [Linux Documentation](linux/README.md)
 
 ## Recover GRUB & Initramfs
 
@@ -124,6 +171,10 @@ Setiap dokumentasi di repository ini diusahakan memiliki:
 - Verification
 - Post-mortem
 - Prevention / mitigation
+
+Template service tersedia di:
+
+- [templates/service.md](templates/service.md)
 
 ---
 

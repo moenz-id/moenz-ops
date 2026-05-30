@@ -97,35 +97,18 @@ mkdir -p /data/stacks/cloudflared
 
 # Docker Compose
 
-Buat file:
+File compose tersedia di:
+
+- [../../docker/cloudflared.yaml](../../docker/cloudflared.yaml)
+
+Buat file deployment:
 
 ```bash
-nano /data/stacks/cloudflared/compose.yaml
+cp docker/cloudflared.yaml /data/stacks/cloudflared/compose.yaml
+cp docker/.env.example /data/stacks/cloudflared/.env
 ```
 
-Isi:
-
-```yaml
-services:
-
-  cloudflared:
-    container_name: cloudflared
-    image: cloudflare/cloudflared:latest
-
-    restart: unless-stopped
-
-    command: tunnel run
-
-    environment:
-      - TUNNEL_TOKEN=PASTE_TOKEN_DISINI
-
-    networks:
-      - internal_net
-
-networks:
-  internal_net:
-    external: true
-```
+Edit `/data/stacks/cloudflared/.env` dan isi `TUNNEL_TOKEN`.
 
 ---
 
@@ -207,7 +190,7 @@ http://IP-STB:8123
 Atau:
 
 ```text
-http://192.168.1.100:8123
+http://IP_STB:8123
 ```
 
 ---
@@ -259,7 +242,9 @@ Direktori yang perlu dibackup:
 /data/stacks/cloudflared
 ```
 
-Karena konfigurasi tunnel berada di Cloudflare Dashboard, biasanya cukup menyimpan compose file dan token tunnel.
+Karena konfigurasi tunnel berada di Cloudflare Dashboard, biasanya cukup menyimpan compose file dan `.env.example`.
+
+Jangan commit file `.env` yang berisi `TUNNEL_TOKEN`.
 
 ---
 
