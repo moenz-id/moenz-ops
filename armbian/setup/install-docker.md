@@ -1,291 +1,185 @@
-# Install Docker on Armbian (STB Homelab)
+# Install Docker Engine di Armbian / Debian
 
-## Summary
+Panduan ini adalah entry point instalasi Docker Engine untuk host Armbian STB. Instalasi menggunakan **repository APT resmi Docker**, bukan convenience script pihak ketiga.
 
-Dokumentasi instalasi Docker pada Armbian untuk kebutuhan homelab STB.
+## Pilih metode instalasi
 
-Panduan ini mencakup:
+| Metode | File / langkah | Kapan digunakan |
+|---|---|---|
+| Otomatis (disarankan) | [install-docker.sh](./install-docker.sh) | Instalasi cepat dan konsisten |
+| Manual | Ikuti [dokumentasi resmi Docker](https://docs.docker.com/engine/install/debian/) | Jika ingin menjalankan dan memeriksa setiap perintah sendiri |
 
-- Install Docker Engine
-- Install Docker Compose Plugin
-- Verifikasi instalasi Docker
-- Setup direktori data homelab
-- Setup mount SD Card untuk data Docker
-- Pembuatan network internal_net (opsional)
-
-Panduan ini tidak mencakup instalasi aplikasi seperti Home Assistant, Mosquitto, AdGuard Home, ESPHome, maupun n8n.
+> Script otomatis hanya memasang Docker Engine dan plugin resminya. Pengaturan direktori data, migrasi ke SD Card, dan deployment aplikasi dilakukan terpisah.
 
 ---
 
-# Environment
+## 1. Environment dan prasyarat
 
-Contoh environment:
+Panduan ini ditujukan untuk:
 
-- Armbian 26.x
-- Kernel OPhub
-- ARM64 / AArch64
-- eMMC untuk sistem operasi
-- SD Card untuk data homelab
+- Armbian berbasis Debian (contoh: Debian 13 Trixie).
+- Debian 12 Bookworm atau Debian 13 Trixie.
+- Arsitektur yang didukung script: `arm64`, `armhf`, `amd64`, dan `ppc64el`.
+- Akses internet sementara untuk mengambil paket APT dan Docker image saat pengujian.
+- Hak akses `sudo`.
 
----
-
-# Update Sistem
+Periksa sistem sebelum instalasi:
 
 ```bash
-sudo apt update
-sudo apt upgrade -y
+cat /etc/os-release
+dpkg --print-architecture
 ```
 
----
+Pastikan codename yang terdeteksi adalah `bookworm` atau `trixie`.
 
-# Install Dependency
+## 2. Instalasi otomatis (disarankan)
+
+Jalankan dari Armbian:
 
 ```bash
-sudo apt install -y ca-certificates curl
+curl -fsSLO https://raw.githubusercontent.com/moenz-id/moenz-ops/main/armbian/setup/install-docker.sh
+chmod +x install-docker.sh
+sudo ./install-docker.sh
 ```
 
----
+Script akan:
 
-# Tambahkan Repository Docker
+1. Memeriksa OS, codename Debian, arsitektur, dan hak akses root.
+2. Memasang dependensi `ca-certificates` dan `curl`.
+3. Mengunduh GPG key resmi Docker ke `/etc/apt/keyrings/docker.asc`.
+4. Membuat repository APT Docker di `/etc/apt/sources.list.d/docker.sources`.
+5. Menghapus paket konflik yang disebutkan dalam dokumentasi Docker.
+6. Memasang Docker Engine, CLI, containerd, Buildx, dan Compose Plugin.
+7. Mengaktifkan serta menjalankan service Docker.
+8. Menampilkan versi komponen untuk verifikasi.
+
+### Perhatian sebelum menjalankan
+
+- Jika sebelumnya menggunakan paket Docker dari distro atau runtime lain, proses penghapusan paket konflik dapat menghentikan service terkait.
+- Script **tidak menjalankan** `rm -rf` dan tidak sengaja menghapus `/var/lib/docker` atau `/var/lib/containerd`. Namun, tetap buat backup sebelum mengganti instalasi Docker yang sudah digunakan.
+- Script tidak menjalankan `apt upgrade`, tidak menambahkan user ke grup `docker`, dan tidak mengubah Docker data-root.
+- Keanggotaan grup `docker` memberikan hak akses setara root. Aktifkan hanya jika memahami implikasi keamanannya.
+
+## 3. Verifikasi instalasi
+
+Periksa service:
 
 ```bash
-sudo install -m 0755 -d /etc/apt/keyrings
-
-sudo curl -fsSL https://download.docker.com/linux/debian/gpg \
--o /etc/apt/keyrings/docker.asc
-
-sudo chmod a+r /etc/apt/keyrings/docker.asc
+sudo systemctl is-active docker
+sudo systemctl status docker --no-pager
 ```
 
-Tambahkan repository:
+Periksa versi:
 
 ```bash
-echo \
-"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] \
-https://download.docker.com/linux/debian \
-$(. /etc/os-release && echo \"$VERSION_CODENAME\") stable" | \
-sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-```
-
-Update repository:
-
-```bash
-sudo apt update
-```
-
----
-
-# Install Docker Engine
-
-```bash
-sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-```
-
----
-
-# Aktifkan Docker Saat Boot
-
-```bash
-sudo systemctl enable --now docker
-```
-
-Verifikasi:
-
-```bash
-systemctl status docker
-```
-
----
-
-# Tambahkan User ke Group Docker
-
-```bash
-sudo usermod -aG docker $USER
-newgrp docker
-```
-
-Atau logout dan login kembali.
-
----
-
-# Verifikasi Instalasi
-
-Cek versi Docker:
-
-```bash
-docker version
-```
-
-Cek Docker Compose:
-
-```bash
+docker --version
 docker compose version
+docker buildx version
+containerd --version
 ```
 
-Cek informasi Docker:
+Jalankan pengujian:
 
 ```bash
-docker info
+sudo docker run --rm hello-world
 ```
 
-Cek container aktif:
+Perintah `hello-world` membutuhkan akses internet untuk mengunduh image jika image belum tersedia secara lokal.
+
+Periksa kondisi Docker:
+
+```bash
+sudo docker info
+sudo docker ps -a
+```
+
+## 4. Menjalankan Docker tanpa sudo (opsional)
+
+Secara default, gunakan `sudo docker ...`. Jika ingin menjalankan Docker sebagai user biasa:
+
+```bash
+sudo usermod -aG docker "$USER"
+```
+
+Logout lalu login kembali, kemudian periksa:
 
 ```bash
 docker ps
 ```
 
-Tes Docker:
+**Peringatan:** user yang menjadi anggota grup `docker` pada dasarnya memiliki hak istimewa setara root pada host.
 
-```bash
-docker run hello-world
-```
+## 5. Langkah setelah instalasi
 
----
+Instalasi Docker tidak otomatis menyiapkan struktur direktori homelab. Tentukan lokasi penyimpanan terlebih dahulu.
 
-# Setup SD Card Untuk Data Homelab
-
-Cek disk:
-
-```bash
-lsblk -f
-```
-
-Contoh mount point:
-
-```bash
-sudo mkdir -p /data
-```
-
-Tambahkan ke fstab:
-
-```fstab
-UUID=<UUID_SD_CARD> /data ext4 defaults,noatime 0 2
-```
-
-Reload:
-
-```bash
-sudo mount -a
-sudo systemctl daemon-reload
-```
-
-Verifikasi:
-
-```bash
-df -h /data
-```
-
----
-
-# Struktur Direktori Homelab
-
-Contoh struktur direktori:
+Contoh struktur direktori aplikasi:
 
 ```text
-/data
-├── appdata
-│   ├── homeassistant
-│   ├── mosquitto
-│   ├── adguardhome
-│   ├── esphome
-│   └── n8n
-├── backups
-└── stack
+/data/
+├── appdata/
+├── backups/
+└── stack/
 ```
 
-Buat direktori:
+Buat direktori tersebut hanya setelah memastikan `/data` memang merupakan filesystem atau mount point penyimpanan yang diinginkan:
 
 ```bash
-mkdir -p /data/appdata
-mkdir -p /data/backups
-mkdir -p /data/stack
+sudo mkdir -p /data/appdata /data/backups /data/stack
 ```
+
+### Menggunakan SD Card sebagai Docker data-root
+
+Jika ingin memindahkan data Docker dari eMMC ke SD Card, **jangan hanya mengubah `data-root` pada instalasi Docker yang sudah berisi container dan image**. Ikuti prosedur migrasi yang mencakup penghentian Docker dan penyalinan data:
+
+- [Migrate Docker Root to SD Card](./migrate-docker-root-to-sdcard.md)
+
+### Docker network
+
+Network bersama seperti `internal_net` bersifat opsional. Buat hanya jika stack Compose memang akan menggunakannya:
+
+```bash
+sudo docker network create internal_net
+sudo docker network ls
+```
+
+## 6. Troubleshooting dasar
+
+### APT tidak menemukan paket Docker
+
+Periksa codename dan arsitektur:
+
+```bash
+. /etc/os-release
+printf 'Codename: %s\\n' "$VERSION_CODENAME"
+dpkg --print-architecture
+```
+
+Periksa repository:
+
+```bash
+cat /etc/apt/sources.list.d/docker.sources
+sudo apt update
+```
+
+Pastikan codename dan arsitektur didukung oleh repository Docker.
+
+### Service Docker gagal berjalan
+
+```bash
+sudo systemctl status docker --no-pager
+sudo journalctl -u docker -n 100 --no-pager
+```
+
+### Butuh bantuan lebih lanjut
+
+- [Docker Engine installation on Debian (official)](https://docs.docker.com/engine/install/debian/)
+- [Docker Engine post-installation steps (official)](https://docs.docker.com/engine/install/linux-postinstall/)
 
 ---
 
-# Opsional: Pindahkan Docker Root ke SD Card
+## Ringkasan file terkait
 
-Jika kapasitas eMMC terbatas, Docker Root dapat dipindahkan ke SD Card.
-
-Buat direktori:
-
-```bash
-mkdir -p /data/docker-data
-```
-
-Buat konfigurasi:
-
-```bash
-sudo mkdir -p /etc/docker
-sudo nano /etc/docker/daemon.json
-```
-
-Isi:
-
-```json
-{
-  "data-root": "/data/docker-data"
-}
-```
-
-Restart Docker:
-
-```bash
-sudo systemctl restart docker
-```
-
-Verifikasi:
-
-```bash
-docker info | grep "Docker Root Dir"
-```
-
-Output yang diharapkan:
-
-```text
-Docker Root Dir: /data/docker-data
-```
-
----
-
-# Opsional: Membuat Network internal_net
-
-Buat network bridge internal untuk komunikasi antar container.
-
-```bash
-docker network create internal_net
-```
-
-Verifikasi:
-
-```bash
-docker network ls
-```
-
-Contoh output:
-
-```text
-internal_net
-```
-
-Network ini dapat digunakan oleh service seperti:
-
-- Mosquitto
-- ESPHome
-- AdGuard Home
-- n8n
-- Portainer
-
----
-
-# Final Verification
-
-```bash
-docker version
-docker compose version
-docker info
-docker network ls
-docker ps
-```
-
-Jika seluruh perintah berjalan tanpa error maka Docker siap digunakan untuk deploy service homelab.
+- [Installer otomatis](./install-docker.sh)
+- [Migrasi Docker data-root ke SD Card](./migrate-docker-root-to-sdcard.md)
+- [Panduan instalasi Tailscale](./install-tailscale.md)
