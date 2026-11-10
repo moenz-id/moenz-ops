@@ -1,16 +1,14 @@
 # Armbian Documentation
 
-Dokumentasi operasional homelab berbasis Armbian STB.
-Repository ini menggunakan struktur dokumentasi yang dipisahkan berdasarkan fungsi agar lebih mudah dicari saat rebuild, migrasi, maupun troubleshooting.
+Dokumentasi operasional homelab berbasis Armbian STB. Materi dipisahkan berdasarkan fungsi agar mudah ditemukan saat instalasi ulang, migrasi, maupun troubleshooting.
 
----
-
-## Documentation Structure
+## Struktur dokumentasi
 
 ```text
 armbian/
 ├── setup/
 │   ├── install-docker.md
+│   ├── install-docker.sh
 │   ├── install-tailscale.md
 │   └── migrate-docker-root-to-sdcard.md
 ├── services/
@@ -18,75 +16,65 @@ armbian/
 │   ├── homeassistant.md
 │   ├── portainer.md
 │   └── searxng.md
-├── maintenance/
-│   ├── backup-restore-docker.md
-│   └── troubleshooting.md
-└── scripts/ # Akan segera ditambahkan
+└── maintenance/
+    ├── backup-restore-docker.md
+    └── troubleshooting.md
 ```
 
----
-
-## Current Architecture
+## Peran perangkat
 
 ### OpenWrt
-Role:
-- Gateway
-- DHCP Server
-- DNS Server
-- Internet Routing
+
+- Gateway dan routing jaringan
+- DHCP server
+- DNS server
 
 ### Armbian STB
-Role:
-- Docker Host
+
+- Host Docker
 - Home Assistant
 - Mosquitto
 - Portainer
-- Cloudflared
+- Cloudflared dan layanan homelab lainnya
 
-### Network Standard
-Sebagian besar container menggunakan:
-```text
-internal_net
-```
-Sedangkan Home Assistant menggunakan:
-```text
-network_mode: host
-```
-untuk mempermudah discovery perangkat lokal.
+## Standar jaringan
 
----
+Sebagian container dapat menggunakan Docker bridge network bersama seperti `internal_net`. Home Assistant dapat menggunakan `network_mode: host` bila diperlukan untuk discovery perangkat lokal. Pilihan network harus disesuaikan dengan kebutuhan dan keamanan setiap layanan.
 
-## Related Documentation
+## Navigasi
 
-Berikut adalah daftar dokumentasi terkait yang bisa Anda jelajahi:
+### Setup dan instalasi
 
-### ⚙️ Setup & Instalasi
-- [Install Docker](setup/install-docker.md)
-- [Install Tailscale](setup/install-tailscale.md)
-- [Migrate Docker Root to SD Card](setup/migrate-docker-root-to-sdcard.md)
+| Dokumen | Kegunaan |
+|---|---|
+| [Install Docker](setup/install-docker.md) | Panduan utama instalasi Docker; menjelaskan metode otomatis dan manual |
+| [Installer Docker](setup/install-docker.sh) | Script instalasi dari repository APT resmi Docker |
+| [Install Tailscale](setup/install-tailscale.md) | Instalasi Tailscale |
+| [Migrate Docker Root to SD Card](setup/migrate-docker-root-to-sdcard.md) | Migrasi penyimpanan Docker ke SD Card |
 
-### 🚀 Layanan (Services)
+### Services
+
 - [Home Assistant](services/homeassistant.md)
 - [Portainer](services/portainer.md)
 - [Cloudflared](services/cloudflared.md)
 - [SearXNG](services/searxng.md)
 
-### 🧹 Pemeliharaan (Maintenance)
+### Maintenance
+
 - [Docker Backup & Restore](maintenance/backup-restore-docker.md)
 - [Troubleshooting](maintenance/troubleshooting.md)
 
-### 🐳 Konfigurasi Docker Compose (Referensi)
-- [Docker Compose Overview (Main Repo)](../docker/README.md)
-- [homeassistant.yaml](../docker/homeassistant.yaml)
-- [portainer.yaml](../docker/portainer.yaml)
-- [cloudflared.yaml](../docker/cloudflared.yaml)
-- [searxng.yaml](../docker/searxng.yaml)
+### Docker Compose
 
-### 🧑‍💻 Script Pembantu (Akan Datang)
-- Skrip otomatisasi untuk backup, sync, dan maintenance akan ditambahkan di folder ini.
+- [Docker Compose Overview](../docker/README.md)
+- [Home Assistant](../docker/homeassistant.yaml)
+- [Portainer](../docker/portainer.yaml)
+- [Cloudflared](../docker/cloudflared.yaml)
+- [SearXNG](../docker/searxng.yaml)
 
----
+## Catatan
 
-## Notes
-
-Dokumentasi utama berada di subfolder berdasarkan fungsi. File lama di root `armbian/` sudah dimigrasikan ke struktur ini.
+- Mulai dari dokumen panduan sebelum menjalankan script.
+- Periksa target mount dan kapasitas storage sebelum menyimpan data container di SD Card.
+- Backup data dan konfigurasi sebelum melakukan migrasi atau perubahan besar.
+- Dokumentasi ini mencerminkan konfigurasi homelab yang digunakan dan dapat berubah seiring perkembangan sistem.
